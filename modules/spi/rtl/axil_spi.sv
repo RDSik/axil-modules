@@ -133,15 +133,15 @@ module axil_spi
         .m_spi        (m_spi)
     );
 
+    localparam logic [1:0] SIGNAL_EN = 2'b01;
     localparam logic FIFO_ASYNC_MODE = 0;
-    localparam logic TLAST_EN = 1;
     localparam RAM_STYLE = "distributed";
 
     axis_fifo #(
         .FIFO_DEPTH   (FIFO_DEPTH),
         .FIFO_WIDTH   (SPI_DATA_WIDTH),
         .ASYNC_MODE_EN(FIFO_ASYNC_MODE),
-        .TLAST_EN     (TLAST_EN),
+        .SIGNAL_EN    (SIGNAL_EN),
         .RAM_STYLE    (RAM_STYLE)
     ) i_axis_fifo_tx (
         .s_axis    (fifo_tx),
@@ -155,7 +155,7 @@ module axil_spi
         .FIFO_DEPTH   (FIFO_DEPTH),
         .FIFO_WIDTH   (SPI_DATA_WIDTH),
         .ASYNC_MODE_EN(FIFO_ASYNC_MODE),
-        .TLAST_EN     (TLAST_EN),
+        .SIGNAL_EN    (SIGNAL_EN),
         .RAM_STYLE    (RAM_STYLE)
     ) i_axis_fifo_rx (
         .s_axis    (spi_rx),
