@@ -132,7 +132,6 @@ module ps_pl_top
     logic mm2s_irq;
 
     axil_top #(
-        .CLK_FREQ       (CLK_FREQ),
         .FIFO_DEPTH     (FIFO_DEPTH),
         .AXIL_ADDR_WIDTH(AXIL_ADDR_WIDTH),
         .AXIL_DATA_WIDTH(AXIL_DATA_WIDTH),
