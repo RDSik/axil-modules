@@ -46,7 +46,7 @@ module axis_reg_slice #(
                 m_axis.tkeep <= s_axis.tkeep;
             end
         end
-    end else begin : g_tlast_disable
+    end else begin : g_tkeep_disable
         assign m_axis.tkeep = '0;
     end
 
