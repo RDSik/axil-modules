@@ -5,7 +5,6 @@
 module axil_rgmii_tb ();
 
     localparam real CLK_FREQ = 500 * 10 ** 6;
-    localparam int FIFO_DEPTH = 128;
     localparam int AXIL_ADDR_WIDTH = 32;
     localparam int AXIL_DATA_WIDTH = 32;
     localparam int AXIS_DATA_WIDTH = 8;
@@ -79,7 +78,6 @@ module axil_rgmii_tb ();
     end
 
     axil_rgmii #(
-        .FIFO_DEPTH     (FIFO_DEPTH),
         .AXIL_DATA_WIDTH(AXIL_DATA_WIDTH),
         .AXIL_ADDR_WIDTH(AXIL_ADDR_WIDTH),
         .RGMII_WIDTH    (RGMII_WIDTH),
