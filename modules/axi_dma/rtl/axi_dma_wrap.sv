@@ -48,7 +48,7 @@ module axi_dma_wrap #(
         .CDC_REG_NUM  (CDC_REG_NUM),
         .SIGNAL_EN    (SIGNAL_EN),
         .ASYNC_MODE_EN(ASYNC_MODE_EN),
-        .FIFO_FIRST   (1)
+        .FIFO_FIRST   (0)
     ) i_mm2s_axis_dw_conv (
         .s_axis(m_axis_mm2s),
         .m_axis(m_axis)
