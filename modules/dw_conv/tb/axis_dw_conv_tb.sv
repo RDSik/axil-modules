@@ -12,8 +12,8 @@ module axis_dw_conv_tb ();
     localparam int CLK_PER_NS = 2;
     localparam int FIFO_DEPTH = 16;
     localparam int CDC_REG_NUM = 3;
-    localparam logic TLAST_EN = 1;
     localparam logic ASYNC_MODE_EN = 1;
+    localparam logic [1:0] SIGNAL_EN = 2'b01;
 
     localparam int M_CLK_PER = 2;
     localparam int S_CLK_PER = 4;
@@ -73,7 +73,7 @@ module axis_dw_conv_tb ();
         env_base #(
             .S_DATA_WIDTH(M_DATA_WIDTH),
             .M_DATA_WIDTH(S_DATA_WIDTH),
-            .TLAST_EN    (TLAST_EN)
+            .TLAST_EN    (SIGNAL_EN[0])
         ) env;
         env = new(s_axis, m_axis);
         env.run();
@@ -87,9 +87,9 @@ module axis_dw_conv_tb ();
     axis_dw_conv_wrap #(
         .FIFO_DEPTH   (FIFO_DEPTH),
         .CDC_REG_NUM  (CDC_REG_NUM),
-        .TLAST_EN     (TLAST_EN),
         .FIFO_FIRST   (FIFO_FIRST),
-        .ASYNC_MODE_EN(ASYNC_MODE_EN)
+        .ASYNC_MODE_EN(ASYNC_MODE_EN),
+        .SIGNAL_EN    (SIGNAL_EN)
     ) dut (
         .m_axis(s_axis),
         .s_axis(m_axis)
