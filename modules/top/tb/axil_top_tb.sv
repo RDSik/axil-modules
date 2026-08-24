@@ -104,7 +104,6 @@ module axil_top_tb
     end
 
     axil_top #(
-        .CLK_FREQ       (CLK_FREQ),
         .AXIL_ADDR_WIDTH(AXIL_ADDR_WIDTH),
         .AXIL_DATA_WIDTH(AXIL_DATA_WIDTH),
         .FIFO_DEPTH     (FIFO_DEPTH),
