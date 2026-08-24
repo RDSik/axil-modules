@@ -90,7 +90,8 @@ module axil_spi
         .rst_i     (reset),
         .en_i      (tx_handshake),
         .max_val_i (wr_regs.control.bytes_num),
-        .cnt_last_o(tx_last)
+        .cnt_last_o(tx_last),
+        .cnt_o     ()
     );
 
     assign fifo_tx.tlast  = tx_last;
