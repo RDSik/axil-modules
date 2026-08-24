@@ -57,7 +57,7 @@ class axil_uart_class #(
             $display("[%0t][UART]: tx_fifo_empty = %0d", $time, uart_regs.status.tx_fifo_empty);
             $display("[%0t][UART]: rx_fifo_full  = %0d", $time, uart_regs.status.rx_fifo_full);
             $display("[%0t][UART]: tx_fifo_full  = %0d", $time, uart_regs.status.tx_fifo_full);
-            $display("[%0t][UART]: rx_fifo_cnt  = %0d", $time, uart_regs.status.rx_fifo_cnt);
+            $display("[%0t][UART]: rx_fifo_cnt   = %0d", $time, uart_regs.status.rx_fifo_cnt);
             $display("[%0t][UART]: tx_fifo_cnt   = %0d", $time, uart_regs.status.tx_fifo_cnt);
             $display("[%0t][UART]: parity_err    = %0d", $time, uart_regs.status.parity_err);
             $display("[%0t][UART]: fifo_depth    = %0d", $time, uart_regs.param.fifo_depth);
