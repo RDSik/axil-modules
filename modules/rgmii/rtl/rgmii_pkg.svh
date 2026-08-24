@@ -48,8 +48,14 @@ package rgmii_pkg;
     } rgmii_param_t;
 
     typedef struct packed {
-        logic [30:0] rsrvd;
+        logic [10:0] rsrvd;
         logic        crc_err;
+        logic        rx_fifo_empty;
+        logic        tx_fifo_empty;
+        logic        rx_fifo_full;
+        logic        tx_fifo_full;
+        logic [7:0]  tx_fifo_cnt;
+        logic [7:0]  rx_fifo_cnt;
     } rgmii_status_t;
 
     typedef struct packed {
@@ -95,10 +101,7 @@ package rgmii_pkg;
     localparam int RGMII_STATUS_REG_POS = RGMII_HOST_MAC_REG_POS + $bits(rgmii_mac_t) / 32;
     localparam int RGMII_PARAM_REG_POS = RGMII_STATUS_REG_POS + $bits(rgmii_status_t) / 32;
 
-    localparam rgmii_reg_t RGMII_REG_INIT = '{
-        control : '{tx_reset: 1'b1, rx_reset: 1'b1, default: '0},
-        default: '0
-    };
+    localparam rgmii_reg_t RGMII_REG_INIT = '{control : '{tx_reset: 1'b1, rx_reset: 1'b1, default: '0}, default: '0};
 
     typedef struct packed {
         rgmii_mac_t     mac;
