@@ -93,7 +93,7 @@ module mac_tx
         .FIFO_WIDTH   (AXIS_DATA_WIDTH),
         .CDC_REG_NUM  (CDC_REG_NUM),
         .ASYNC_MODE_EN(ASYNC_MODE_EN),
-        .TLAST_EN     (1)
+        .SIGNAL_EN    ('0)
     ) i_axis_fifo_rx (
         .s_axis       (s_axis),
         .m_axis       (m_axis),
