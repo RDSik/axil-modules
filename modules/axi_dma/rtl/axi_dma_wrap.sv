@@ -37,6 +37,7 @@ module axi_dma_wrap #(
         .CDC_REG_NUM  (CDC_REG_NUM),
         .SIGNAL_EN    (SIGNAL_EN),
         .ASYNC_MODE_EN(ASYNC_MODE_EN),
+        .FIFO_FIRST   (0)
     ) i_s2mm_axis_dw_conv (
         .s_axis(s_axis),
         .m_axis(s_axis_s2mm)
@@ -47,6 +48,7 @@ module axi_dma_wrap #(
         .CDC_REG_NUM  (CDC_REG_NUM),
         .SIGNAL_EN    (SIGNAL_EN),
         .ASYNC_MODE_EN(ASYNC_MODE_EN),
+        .FIFO_FIRST   (1)
     ) i_mm2s_axis_dw_conv (
         .s_axis(m_axis_mm2s),
         .m_axis(m_axis)
