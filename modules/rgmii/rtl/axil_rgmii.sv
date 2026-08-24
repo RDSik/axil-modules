@@ -3,6 +3,7 @@
 module axil_rgmii
     import rgmii_pkg::*;
 #(
+    parameter int   FIFO_DEPTH      = 128,
     parameter int   AXIL_ADDR_WIDTH = 32,
     parameter int   AXIL_DATA_WIDTH = 32,
     parameter int   RGMII_WIDTH     = 4,
