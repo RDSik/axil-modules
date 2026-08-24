@@ -134,7 +134,6 @@ module axil_top #(
     );
 
     axil_rgmii #(
-        .FIFO_DEPTH     (FIFO_DEPTH),
         .AXIL_ADDR_WIDTH(AXIL_ADDR_WIDTH),
         .AXIL_DATA_WIDTH(AXIL_DATA_WIDTH),
         .RGMII_WIDTH    (RGMII_WIDTH),
