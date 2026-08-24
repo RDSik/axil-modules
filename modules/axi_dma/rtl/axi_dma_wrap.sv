@@ -13,7 +13,7 @@ module axi_dma_wrap #(
 );
 
     localparam int AXI_DATA_WIDTH = m_axi.DATA_WIDTH;
-    localparam logic TLAST_EN = 1;
+    localparam logic [1:0] SIGNAL_EN = '1;
 
     axis_if #(
         .DATA_WIDTH(AXI_DATA_WIDTH)
@@ -30,14 +30,14 @@ module axi_dma_wrap #(
     );
 
     axis_dw_conv #(
-        .TLAST_EN(TLAST_EN)
+        .SIGNAL_EN(SIGNAL_EN)
     ) i_s2mm_axis_dw_conv (
         .s_axis(s_axis),
         .m_axis(s_axis_s2mm)
     );
 
     axis_dw_conv #(
-        .TLAST_EN(TLAST_EN)
+        .SIGNAL_EN(SIGNAL_EN)
     ) i_mm2s_axis_dw_conv (
         .s_axis(m_axis_mm2s),
         .m_axis(m_axis)
