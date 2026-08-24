@@ -95,7 +95,6 @@ module axil_rgmii
     axis_rgmii #(
         .RGMII_WIDTH  (RGMII_WIDTH),
         .PAYLOAD_WIDTH(PAYLOAD_WIDTH),
-        .ASYNC_MODE_EN(ASYNC_MODE_EN),
         .VENDOR       (VENDOR)
     ) i_axis_rgmii (
         .tx_rst_i           (tx_reset),
