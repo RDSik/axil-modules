@@ -50,7 +50,7 @@ module axil_top #(
     axis_if #(
         .DATA_WIDTH(AXIS_DATA_WIDTH)
     ) s_axis_s2mm (
-        .clk_i  (m_eth.tx_clk),
+        .clk_i  (m_eth.rx_clk),
         .arstn_i(arstn_i)
     );
 
