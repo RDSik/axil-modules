@@ -35,28 +35,28 @@ module axil_uart
     axis_if #(
         .DATA_WIDTH(UART_DATA_WIDTH)
     ) fifo_tx (
-        .clk_i(clk_i),
+        .clk_i  (clk_i),
         .arstn_i(~tx_reset)
     );
 
     axis_if #(
         .DATA_WIDTH(UART_DATA_WIDTH)
     ) fifo_rx (
-        .clk_i(clk_i),
+        .clk_i  (clk_i),
         .arstn_i(~rx_reset)
     );
 
     axis_if #(
         .DATA_WIDTH(UART_DATA_WIDTH)
     ) uart_tx (
-        .clk_i(clk_i),
+        .clk_i  (clk_i),
         .arstn_i(~tx_reset)
     );
 
     axis_if #(
         .DATA_WIDTH(UART_DATA_WIDTH)
     ) uart_rx (
-        .clk_i(clk_i),
+        .clk_i  (clk_i),
         .arstn_i(~rx_reset)
     );
 
@@ -132,6 +132,7 @@ module axil_uart
         .FIFO_DEPTH   (FIFO_DEPTH),
         .FIFO_WIDTH   (UART_DATA_WIDTH),
         .ASYNC_MODE_EN(FIFO_ASYNC_MODE),
+        .SIGNAL_EN    ('0),
         .RAM_STYLE    (RAM_STYLE)
     ) i_axis_fifo_tx (
         .s_axis   (fifo_tx),
@@ -144,6 +145,7 @@ module axil_uart
         .FIFO_DEPTH   (FIFO_DEPTH),
         .FIFO_WIDTH   (UART_DATA_WIDTH),
         .ASYNC_MODE_EN(FIFO_ASYNC_MODE),
+        .SIGNAL_EN    ('0),
         .RAM_STYLE    (RAM_STYLE)
     ) i_axis_fifo_rx (
         .s_axis   (uart_rx),
