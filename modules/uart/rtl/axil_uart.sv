@@ -19,15 +19,18 @@ module axil_uart
     axil_if.slave s_axil
 );
 
-    uart_regs_t                    rd_regs;
-    uart_regs_t                    wr_regs;
+    uart_regs_t                          rd_regs;
+    uart_regs_t                          wr_regs;
 
-    logic       [UART_REG_NUM-1:0] rd_request;
-    logic       [UART_REG_NUM-1:0] rd_valid;
-    logic       [UART_REG_NUM-1:0] wr_valid;
+    logic       [      UART_REG_NUM-1:0] rd_request;
+    logic       [      UART_REG_NUM-1:0] rd_valid;
+    logic       [      UART_REG_NUM-1:0] wr_valid;
 
-    logic                          tx_reset;
-    logic                          rx_reset;
+    logic       [$clog2(FIFO_DEPTH)-1:0] tx_cnt;
+    logic       [$clog2(FIFO_DEPTH)-1:0] rx_cnt;
+
+    logic                                tx_reset;
+    logic                                rx_reset;
 
     assign tx_reset = wr_regs.control.tx_reset;
     assign rx_reset = wr_regs.control.rx_reset;
@@ -74,6 +77,8 @@ module axil_uart
         rd_regs.status.tx_fifo_empty = ~uart_tx.tvalid;
         rd_regs.status.rx_fifo_full  = ~uart_rx.tready;
         rd_regs.status.tx_fifo_full  = ~fifo_tx.tready;
+        rd_regs.status.rx_fifo_cnt   = rx_cnt;
+        rd_regs.status.tx_fifo_cnt   = tx_cnt;
         rd_regs.status.parity_err    = parity_err;
 
         rd_regs.rx.data              = fifo_rx.tdata;
@@ -135,10 +140,11 @@ module axil_uart
         .SIGNAL_EN    ('0),
         .RAM_STYLE    (RAM_STYLE)
     ) i_axis_fifo_tx (
-        .s_axis   (fifo_tx),
-        .m_axis   (uart_tx),
-        .a_full_o (),
-        .a_empty_o()
+        .s_axis    (fifo_tx),
+        .m_axis    (uart_tx),
+        .data_cnt_o(tx_cnt),
+        .a_full_o  (),
+        .a_empty_o ()
     );
 
     axis_fifo #(
@@ -148,10 +154,11 @@ module axil_uart
         .SIGNAL_EN    ('0),
         .RAM_STYLE    (RAM_STYLE)
     ) i_axis_fifo_rx (
-        .s_axis   (uart_rx),
-        .m_axis   (fifo_rx),
-        .a_full_o (),
-        .a_empty_o()
+        .s_axis    (uart_rx),
+        .m_axis    (fifo_rx),
+        .data_cnt_o(rx_cnt),
+        .a_full_o  (),
+        .a_empty_o ()
     );
 
 endmodule
