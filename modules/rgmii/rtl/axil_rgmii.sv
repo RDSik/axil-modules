@@ -56,7 +56,7 @@ module axil_rgmii
         rd_regs                  = wr_regs;
 
         rd_regs.param.reg_num    = RGMII_REG_NUM;
-        rd_regs.param.fifo_depth = FIFO_DEPTH;
+        rd_regs.param.fifo_depth = 2 ** RGMII_WIDTH;
 
         rd_regs.status.crc_err   = crc_err;
     end
