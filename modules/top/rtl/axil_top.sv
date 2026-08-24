@@ -43,15 +43,15 @@ module axil_top #(
     axis_if #(
         .DATA_WIDTH(AXIS_DATA_WIDTH)
     ) m_axis_mm2s (
-        .clk_i  (s_axil[0].clk_i),
-        .arstn_i(s_axil[0].arstn_i)
+        .clk_i  (m_eth.tx_clk),
+        .arstn_i(arstn_i)
     );
 
     axis_if #(
         .DATA_WIDTH(AXIS_DATA_WIDTH)
     ) s_axis_s2mm (
-        .clk_i  (s_axil[0].clk_i),
-        .arstn_i(s_axil[0].arstn_i)
+        .clk_i  (m_eth.tx_clk),
+        .arstn_i(arstn_i)
     );
 
     axil_if #(
@@ -76,7 +76,9 @@ module axil_top #(
 
     if (VENDOR == "xilinx") begin : g_axi_dma
         axi_dma_wrap #(
-            .ILA_EN(ILA_EN)
+            .FIFO_DEPTH   (FIFO_DEPTH),
+            .ASYNC_MODE_EN(ASYNC_MODE_EN),
+            .ILA_EN       (ILA_EN)
         ) i_axi_dma_wrap (
             .s_axil    (m_axil[0]),
             .m_axi     (m_axi),
