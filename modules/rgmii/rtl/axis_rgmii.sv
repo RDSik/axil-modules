@@ -27,7 +27,6 @@ module axis_rgmii #(
     axis_if.master m_axis
 );
 
-    localparam int CDC_REG_NUM = 3;
     localparam int GMII_WIDTH = 8;
 
     logic [GMII_WIDTH-1:0] tx_d;
@@ -37,7 +36,6 @@ module axis_rgmii #(
         .GMII_WIDTH     (GMII_WIDTH),
         .PAYLOAD_WIDTH  (PAYLOAD_WIDTH),
         .AXIS_DATA_WIDTH(GMII_WIDTH),
-        .CDC_REG_NUM    (CDC_REG_NUM),
         .ASYNC_MODE_EN  (ASYNC_MODE_EN)
     ) i_mac_tx (
         .clk_i          (m_eth.tx_clk),
@@ -61,7 +59,6 @@ module axis_rgmii #(
         .GMII_WIDTH     (GMII_WIDTH),
         .PAYLOAD_WIDTH  (PAYLOAD_WIDTH),
         .AXIS_DATA_WIDTH(GMII_WIDTH),
-        .CDC_REG_NUM    (CDC_REG_NUM),
         .ASYNC_MODE_EN  (ASYNC_MODE_EN)
     ) i_mac_rx (
         .clk_i              (m_eth.rx_clk),
