@@ -1,6 +1,6 @@
 /* verilator lint_off TIMESCALEMOD */
 module axis_dw_conv #(
-    parameter logic TLAST_EN = 0
+    parameter logic [1:0] SIGNAL_EN = '0
 ) (
     axis_if.master m_axis,
     axis_if.slave  s_axis
@@ -60,18 +60,27 @@ module axis_dw_conv #(
             end
         end
 
-        if (TLAST_EN) begin : g_tlast_en
+        if (SIGNAL_EN[0]) begin : g_tlast_en
             always_ff @(posedge clk_i or negedge arstn_i) begin
                 if (~arstn_i) begin
                     m_axis_tlast <= '0;
-                    m_axis_tkeep <= '0;
                 end else if (s_handshake) begin
                     m_axis_tlast <= s_axis.tlast;
-                    m_axis_tkeep <= s_axis.tkeep;
                 end
             end
         end else begin : g_tlast_disable
             assign m_axis_tlast = '0;
+        end
+
+        if (SIGNAL_EN[1]) begin : g_tkeep_en
+            always_ff @(posedge clk_i or negedge arstn_i) begin
+                if (~arstn_i) begin
+                    m_axis_tkeep <= '0;
+                end else if (s_handshake) begin
+                    m_axis_tkeep <= s_axis.tkeep;
+                end
+            end
+        end else begin : g_tlast_disable
             assign m_axis_tkeep = '0;
         end
 
@@ -127,25 +136,35 @@ module axis_dw_conv #(
             end
         end
 
-        if (TLAST_EN) begin : g_tlast_en
+        if (SIGNAL_EN[0]) begin : g_tlast_en
             always_ff @(posedge clk_i or negedge arstn_i) begin
                 if (~arstn_i) begin
                     m_axis_tlast <= '0;
-                    m_axis_tkeep <= '0;
                 end else begin
                     if (m_handshake) begin
                         m_axis_tlast <= '0;
-                        m_axis_tkeep <= '0;
-                    end else if (s_handshake) begin
-                        m_axis_tkeep[cnt] <= s_axis.tkeep;
-                        if (~m_axis_tlast) begin
-                            m_axis_tlast <= s_axis.tlast;
-                        end
+                    end else if (s_handshake & ~m_axis_tlast) begin
+                        m_axis_tlast <= s_axis.tlast;
                     end
                 end
             end
         end else begin : g_tlast_disable
             assign m_axis_tlast = '0;
+        end
+
+        if (SIGNAL_EN[1]) begin : g_tkeep_en
+            always_ff @(posedge clk_i or negedge arstn_i) begin
+                if (~arstn_i) begin
+                    m_axis_tkeep <= '0;
+                end else begin
+                    if (m_handshake) begin
+                        m_axis_tkeep <= '0;
+                    end else if (s_handshake) begin
+                        m_axis_tkeep[cnt] <= s_axis.tkeep;
+                    end
+                end
+            end
+        end else begin : g_tlast_disable
             assign m_axis_tkeep = '0;
         end
 
