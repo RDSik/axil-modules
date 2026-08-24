@@ -1,5 +1,7 @@
 module axi_dma_wrap #(
-    parameter logic ILA_EN = 0
+    parameter int   FIFO_DEPTH    = 128,
+    parameter logic ASYNC_MODE_EN = 0,
+    parameter logic ILA_EN        = 0
 ) (
     output logic s2mm_irq_o,
     output logic mm2s_irq_o,
@@ -14,6 +16,7 @@ module axi_dma_wrap #(
 
     localparam int AXI_DATA_WIDTH = m_axi.DATA_WIDTH;
     localparam logic [1:0] SIGNAL_EN = '1;
+    localparam int CDC_REG_NUM = 3;
 
     axis_if #(
         .DATA_WIDTH(AXI_DATA_WIDTH)
@@ -29,15 +32,21 @@ module axi_dma_wrap #(
         .arstn_i(s_axil.arstn_i)
     );
 
-    axis_dw_conv #(
-        .SIGNAL_EN(SIGNAL_EN)
+    axis_dw_conv_wrap #(
+        .FIFO_DEPTH   (FIFO_DEPTH),
+        .CDC_REG_NUM  (CDC_REG_NUM),
+        .SIGNAL_EN    (SIGNAL_EN),
+        .ASYNC_MODE_EN(ASYNC_MODE_EN),
     ) i_s2mm_axis_dw_conv (
         .s_axis(s_axis),
         .m_axis(s_axis_s2mm)
     );
 
-    axis_dw_conv #(
-        .SIGNAL_EN(SIGNAL_EN)
+    axis_dw_conv_wrap #(
+        .FIFO_DEPTH   (FIFO_DEPTH),
+        .CDC_REG_NUM  (CDC_REG_NUM),
+        .SIGNAL_EN    (SIGNAL_EN),
+        .ASYNC_MODE_EN(ASYNC_MODE_EN),
     ) i_mm2s_axis_dw_conv (
         .s_axis(m_axis_mm2s),
         .m_axis(m_axis)
