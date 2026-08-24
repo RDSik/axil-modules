@@ -15,8 +15,8 @@ module axi_dma_wrap #(
 );
 
     localparam int AXI_DATA_WIDTH = m_axi.DATA_WIDTH;
-    localparam logic [1:0] SIGNAL_EN = '1;
     localparam int CDC_REG_NUM = 3;
+    localparam logic [1:0] SIGNAL_EN = '1;
 
     axis_if #(
         .DATA_WIDTH(AXI_DATA_WIDTH)
