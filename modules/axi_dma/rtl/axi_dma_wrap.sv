@@ -14,8 +14,9 @@ module axi_dma_wrap #(
     axi_if.master m_axi
 );
 
-    localparam int AXI_DATA_WIDTH = m_axi.DATA_WIDTH;
+    
     localparam int CDC_REG_NUM = 3;
+    localparam int AXI_DATA_WIDTH = m_axi.DATA_WIDTH;
     localparam logic [1:0] SIGNAL_EN = '1;
 
     axis_if #(
