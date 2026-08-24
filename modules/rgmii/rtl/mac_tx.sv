@@ -6,7 +6,6 @@ module mac_tx
     parameter int   GMII_WIDTH      = 8,
     parameter int   PAYLOAD_WIDTH   = 11,
     parameter int   AXIS_DATA_WIDTH = 8,
-    parameter int   CDC_REG_NUM     = 2,
     parameter logic ASYNC_MODE_EN   = 0
 ) (
     input logic clk_i,
@@ -91,15 +90,15 @@ module mac_tx
     axis_fifo #(
         .FIFO_DEPTH   (FIFO_DEPTH),
         .FIFO_WIDTH   (AXIS_DATA_WIDTH),
-        .CDC_REG_NUM  (CDC_REG_NUM),
-        .ASYNC_MODE_EN(ASYNC_MODE_EN),
-        .SIGNAL_EN    ('0)
+        .ASYNC_MODE_EN(0),
+        .SIGNAL_EN    ('0),
+        .RAM_STYLE    ("block")
     ) i_axis_fifo_rx (
-        .s_axis       (s_axis),
-        .m_axis       (m_axis),
-        .wr_data_cnt_o(fifo_count),
-        .a_full_o     (),
-        .a_empty_o    ()
+        .s_axis    (s_axis),
+        .m_axis    (m_axis),
+        .data_cnt_o(fifo_count),
+        .a_full_o  (),
+        .a_empty_o ()
     );
 
     logic m_axis_tready;
