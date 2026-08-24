@@ -1,4 +1,4 @@
-module bd_top #(
+module bd_top (
     inout [14:0] DDR_0_addr,
     inout [ 2:0] DDR_0_ba,
     inout        DDR_0_cas_n,
@@ -32,7 +32,7 @@ module bd_top #(
     axi_if.slave s_axi
 );
 
-    zynq_bd zynq_bd_i (
+    zynq_bd i_zynq_bd (
         .M00_AXI_0_araddr (m_axil.araddr),
         .M00_AXI_0_arprot (m_axil.arprot),
         .M00_AXI_0_arready(m_axil.arready),
@@ -75,7 +75,7 @@ module bd_top #(
         .S_AXI_HP0_0_awready(s_axi.awready),
         .S_AXI_HP0_0_awsize (s_axi.awsize),
         .S_AXI_HP0_0_awvalid(s_axi.awvalid),
-        .S_AXI_HP0_0_bid    (),
+        .S_AXI_HP0_0_bid    ('0),
         .S_AXI_HP0_0_bready (s_axi.bready),
         .S_AXI_HP0_0_bresp  (s_axi.bresp),
         .S_AXI_HP0_0_bvalid (s_axi.bvalid),
