@@ -10,8 +10,8 @@ module axis_fifo_tb ();
     localparam int FIFO_DEPTH = 4;
     localparam int CDC_REG_NUM = 3;
     localparam int PIPE_STAGE = 3;
-    localparam logic TLAST_EN = 1;
     localparam logic ASYNC_MODE_EN = 0;
+    localparam logic [1:0] SIGNAL_EN = 2'b01;
     localparam RAM_STYLE = "block";
 
     localparam int M_CLK_PER = 2;
@@ -72,7 +72,7 @@ module axis_fifo_tb ();
         env_base #(
             .S_DATA_WIDTH(FIFO_WIDTH),
             .M_DATA_WIDTH(FIFO_WIDTH),
-            .TLAST_EN    (TLAST_EN)
+            .TLAST_EN    (SIGNAL_EN[0])
         ) env;
         env = new(s_axis, m_axis);
         env.run();
@@ -85,7 +85,7 @@ module axis_fifo_tb ();
         .ASYNC_MODE_EN(ASYNC_MODE_EN),
         .CDC_REG_NUM  (CDC_REG_NUM),
         .RAM_STYLE    (RAM_STYLE),
-        .TLAST_EN     (TLAST_EN)
+        .SIGNAL_EN    (SIGNAL_EN)
     ) dut (
         .s_axis   (m_axis),
         .m_axis   (s_axis),
