@@ -78,8 +78,8 @@ module axil_rgmii
         .host_mac_i         (wr_regs.mac.host),
         .crc_err_o          (crc_err),
         .m_eth              (m_eth),
-        .s_axis             (tx_axis),
-        .m_axis             (rx_axis)
+        .s_axis             (s_axis),
+        .m_axis             (m_axis)
     );
 
 endmodule
