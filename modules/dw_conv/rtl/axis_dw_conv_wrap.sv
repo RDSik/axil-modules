@@ -1,11 +1,10 @@
 /* verilator lint_off TIMESCALEMOD */
 module axis_dw_conv_wrap #(
-    parameter int   FIFO_DEPTH    = 128,
-    parameter int   CDC_REG_NUM   = 3,
-    parameter logic TLAST_EN      = 0,
-    parameter logic FIFO_FIRST    = 1,
-    parameter logic ASYNC_MODE_EN = 0
-
+    parameter int         FIFO_DEPTH    = 128,
+    parameter int         CDC_REG_NUM   = 3,
+    parameter logic       FIFO_FIRST    = 1,
+    parameter logic       ASYNC_MODE_EN = 0,
+    parameter logic [1:0] SIGNAL_EN     = '0
 ) (
     axis_if.master m_axis,
     axis_if.slave  s_axis
@@ -37,7 +36,7 @@ module axis_dw_conv_wrap #(
                 .FIFO_DEPTH   (FIFO_DEPTH),
                 .FIFO_WIDTH   (S_DATA_WIDTH),
                 .CDC_REG_NUM  (CDC_REG_NUM),
-                .TLAST_EN     (TLAST_EN),
+                .SIGNAL_EN    (SIGNAL_EN),
                 .ASYNC_MODE_EN(ASYNC_MODE_EN)
             ) i_axis_fifo (
                 .s_axis   (s_axis),
@@ -47,7 +46,7 @@ module axis_dw_conv_wrap #(
             );
 
             axis_dw_conv #(
-                .TLAST_EN(TLAST_EN)
+                .SIGNAL_EN(SIGNAL_EN)
             ) i_axis_dw_conv (
                 .m_axis(m_axis),
                 .s_axis(axis)
@@ -61,7 +60,7 @@ module axis_dw_conv_wrap #(
             );
 
             axis_dw_conv #(
-                .TLAST_EN(TLAST_EN)
+                .SIGNAL_EN(SIGNAL_EN)
             ) i_axis_dw_conv (
                 .m_axis(axis),
                 .s_axis(s_axis)
@@ -71,7 +70,7 @@ module axis_dw_conv_wrap #(
                 .FIFO_DEPTH   (FIFO_DEPTH),
                 .FIFO_WIDTH   (M_DATA_WIDTH),
                 .CDC_REG_NUM  (CDC_REG_NUM),
-                .TLAST_EN     (TLAST_EN),
+                .SIGNAL_EN    (SIGNAL_EN),
                 .ASYNC_MODE_EN(ASYNC_MODE_EN)
             ) i_axis_fifo (
                 .s_axis   (axis),
@@ -82,7 +81,7 @@ module axis_dw_conv_wrap #(
         end
     end else begin : g_sync
         axis_dw_conv #(
-            .TLAST_EN(TLAST_EN)
+            .SIGNAL_EN(SIGNAL_EN)
         ) i_axis_dw_conv (
             .m_axis(m_axis),
             .s_axis(s_axis)
