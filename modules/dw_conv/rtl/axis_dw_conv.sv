@@ -109,7 +109,7 @@ module axis_dw_conv #(
         logic [        RATIO-1:0][S_DATA_WIDTH-1:0] m_axis_tdata;
         logic [        RATIO-1:0][S_KEEP_WIDTH-1:0] m_axis_tkeep;
 
-        assign flush    = cnt_done | (TLAST_EN & s_axis.tlast);
+        assign flush    = cnt_done | (SIGNAL_EN[0] & s_axis.tlast);
         assign cnt_done = (cnt == RATIO - 1);
 
         always_ff @(posedge clk_i or negedge arstn_i) begin
