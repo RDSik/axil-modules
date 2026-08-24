@@ -42,7 +42,6 @@ module top (
     spi_if #(.CS_WIDTH(SPI_CS_WIDTH)) spi ();
 
     axil_top #(
-        .CLK_FREQ       (50 * 10 ** 6),
         .FIFO_DEPTH     (128),
         .AXIL_ADDR_WIDTH(AXIL_ADDR_WIDTH),
         .AXIL_DATA_WIDTH(AXIL_DATA_WIDTH),
