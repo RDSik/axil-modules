@@ -3,9 +3,9 @@
 module mac_tx
     import rgmii_pkg::*;
 #(
-    parameter int   GMII_WIDTH      = 8,
-    parameter int   PAYLOAD_WIDTH   = 11,
-    parameter int   AXIS_DATA_WIDTH = 8
+    parameter int GMII_WIDTH      = 8,
+    parameter int PAYLOAD_WIDTH   = 11,
+    parameter int AXIS_DATA_WIDTH = 8
 ) (
     input logic clk_i,
     input logic rst_i,
