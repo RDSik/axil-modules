@@ -80,7 +80,7 @@ module axis_dw_conv #(
                     m_axis_tkeep <= s_axis.tkeep;
                 end
             end
-        end else begin : g_tlast_disable
+        end else begin : g_keep_disable
             assign m_axis_tkeep = '0;
         end
 
@@ -164,7 +164,7 @@ module axis_dw_conv #(
                     end
                 end
             end
-        end else begin : g_tlast_disable
+        end else begin : g_tkeep_disable
             assign m_axis_tkeep = '0;
         end
 
