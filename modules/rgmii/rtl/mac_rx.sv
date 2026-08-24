@@ -184,14 +184,14 @@ module mac_rx
             data_valid <= 0;
             data_last  <= 0;
             if (current_state == PREAMBLE) begin
-                preamble_buffer[PREAMBLE_BITS-1-:GMII_WIDTH] <= rxd_z[2];
+                preamble_buffer[PREAMBLE_BITS-1-:GMII_WIDTH]  <= rxd_z[2];
                 preamble_buffer[PREAMBLE_BITS-GMII_WIDTH-1:0] <= preamble_buffer[PREAMBLE_BITS-1:GMII_WIDTH];
             end
             if (current_state == SFD) begin
                 sfd_buffer <= rxd_z[2];
             end
             if (current_state == HEADER) begin
-                header_buffer[HEADER_BITS-1-:GMII_WIDTH] <= rxd_z[2];
+                header_buffer[HEADER_BITS-1-:GMII_WIDTH]  <= rxd_z[2];
                 header_buffer[HEADER_BITS-GMII_WIDTH-1:0] <= header_buffer[HEADER_BITS-1:GMII_WIDTH];
             end
             if (current_state == DATA) begin
@@ -213,6 +213,7 @@ module mac_rx
     end
 
     localparam int FIFO_DEPTH = 2 ** PAYLOAD_WIDTH;
+    localparam logic [1:0] SIGNAL_EN = '1;
 
     axis_if #(
         .DATA_WIDTH(AXIS_DATA_WIDTH)
@@ -224,6 +225,7 @@ module mac_rx
     assign s_axis.tvalid = data_valid;
     assign s_axis.tdata  = data_buffer;
     assign s_axis.tlast  = data_last;
+    assign s_axis.tkeep  = {(AXIS_DATA_WIDTH / 8) {1'b1}};
 
     axis_if #(
         .DATA_WIDTH(AXIS_DATA_WIDTH)
@@ -237,7 +239,7 @@ module mac_rx
         .FIFO_WIDTH   (AXIS_DATA_WIDTH),
         .CDC_REG_NUM  (CDC_REG_NUM),
         .ASYNC_MODE_EN(ASYNC_MODE_EN),
-        .TLAST_EN     (1)
+        .SIGNAL_EN    (SIGNAL_EN)
     ) i_axis_fifo_rx (
         .s_axis       (s_axis),
         .m_axis       (axis),
@@ -246,11 +248,11 @@ module mac_rx
         .a_empty_o    ()
     );
 
-    axis_reg_slice i_axis_reg_slice (
+    axis_reg_slice #(
+        .SIGNAL_EN(SIGNAL_EN)
+    ) i_axis_reg_slice (
         .s_axis(axis),
         .m_axis(m_axis)
     );
-
-    assign m_axis.tkeep = {(AXIS_DATA_WIDTH / 8) {1'b1}};
 
 endmodule
