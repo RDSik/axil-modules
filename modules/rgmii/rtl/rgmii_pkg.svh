@@ -48,14 +48,8 @@ package rgmii_pkg;
     } rgmii_param_t;
 
     typedef struct packed {
-        logic [10:0] rsrvd;
+        logic [30:0] rsrvd;
         logic        crc_err;
-        logic        rx_fifo_empty;
-        logic        tx_fifo_empty;
-        logic        rx_fifo_full;
-        logic        tx_fifo_full;
-        logic [7:0]  tx_fifo_cnt;
-        logic [7:0]  rx_fifo_cnt;
     } rgmii_status_t;
 
     typedef struct packed {
