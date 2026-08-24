@@ -9,7 +9,6 @@ module axis_rgmii_tb ();
     localparam int AXIS_DATA_WIDTH = 8;
     localparam int PAYLOAD_WIDTH = 11;
     localparam int RGMII_WIDTH = 4;
-    localparam logic ASYNC_MODE_EN = 1;
 
     localparam int ETH_CLK_PER = 2;
     localparam int CLK_PER = 4;
@@ -106,7 +105,6 @@ module axis_rgmii_tb ();
     axis_rgmii #(
         .RGMII_WIDTH  (RGMII_WIDTH),
         .PAYLOAD_WIDTH(PAYLOAD_WIDTH),
-        .ASYNC_MODE_EN(ASYNC_MODE_EN),
         .VENDOR       ("")
     ) i_axis_rgmii (
         .rx_rst_i           (eth_rst_i),
