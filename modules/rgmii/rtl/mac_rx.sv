@@ -6,7 +6,6 @@ module mac_rx
     parameter int   GMII_WIDTH      = 8,
     parameter int   PAYLOAD_WIDTH   = 11,
     parameter int   AXIS_DATA_WIDTH = 8,
-    parameter int   CDC_REG_NUM     = 2,
     parameter logic ASYNC_MODE_EN   = 0
 ) (
     input logic clk_i,
@@ -213,46 +212,31 @@ module mac_rx
     end
 
     localparam int FIFO_DEPTH = 2 ** PAYLOAD_WIDTH;
-    localparam logic [1:0] SIGNAL_EN = '1;
-
-    axis_if #(
-        .DATA_WIDTH(AXIS_DATA_WIDTH)
-    ) s_axis (
-        .clk_i  (clk_i),
-        .arstn_i(~rst_i)
-    );
-
-    assign s_axis.tvalid = data_valid;
-    assign s_axis.tdata  = data_buffer;
-    assign s_axis.tlast  = data_last;
-    assign s_axis.tkeep  = {(AXIS_DATA_WIDTH / 8) {1'b1}};
 
     axis_if #(
         .DATA_WIDTH(AXIS_DATA_WIDTH)
     ) axis (
-        .clk_i  (m_axis.clk_i),
-        .arstn_i(m_axis.arstn_i)
+        .clk_i  (clk_i),
+        .arstn_i(~rst_i)
     );
+
+    assign axis.tvalid = data_valid;
+    assign axis.tdata  = data_buffer;
+    assign axis.tlast  = data_last;
+    assign axis.tkeep  = {(AXIS_DATA_WIDTH / 8) {1'b1}};
 
     axis_fifo #(
         .FIFO_DEPTH   (FIFO_DEPTH),
         .FIFO_WIDTH   (AXIS_DATA_WIDTH),
-        .CDC_REG_NUM  (CDC_REG_NUM),
-        .ASYNC_MODE_EN(ASYNC_MODE_EN),
-        .SIGNAL_EN    (SIGNAL_EN)
+        .ASYNC_MODE_EN(0),
+        .SIGNAL_EN    ('1),
+        .RAM_STYLE    ("block")
     ) i_axis_fifo_rx (
-        .s_axis       (s_axis),
-        .m_axis       (axis),
+        .s_axis       (axis),
+        .m_axis       (m_axis),
         .wr_data_cnt_o(),
         .a_full_o     (),
         .a_empty_o    ()
-    );
-
-    axis_reg_slice #(
-        .SIGNAL_EN(SIGNAL_EN)
-    ) i_axis_reg_slice (
-        .s_axis(axis),
-        .m_axis(m_axis)
     );
 
 endmodule
