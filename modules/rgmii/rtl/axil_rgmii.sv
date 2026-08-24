@@ -3,7 +3,6 @@
 module axil_rgmii
     import rgmii_pkg::*;
 #(
-    parameter real  CLK_FREQ        = 50 * 10 ** 6,
     parameter int   AXIL_ADDR_WIDTH = 32,
     parameter int   AXIL_DATA_WIDTH = 32,
     parameter int   RGMII_WIDTH     = 4,
