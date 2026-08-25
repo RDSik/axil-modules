@@ -98,7 +98,6 @@ module axis_dw_conv #(
         assign m_axis.tvalid = busy;
         assign s_axis.tready = ~busy;
     end else if (S_DATA_WIDTH < M_DATA_WIDTH) begin : g_up_size
-
         localparam int RATIO = M_DATA_WIDTH / S_DATA_WIDTH;
 
         logic [$clog2(RATIO)-1:0]                   cnt;
