@@ -1,14 +1,22 @@
 module pll #(
     parameter real CLK_FREQ    = 50*10**6,
     parameter real CLK_MULT    = 5,
-    parameter real CLK0_DIVIDE = 2,
-    parameter real CLK1_DIVIDE = 10
+    parameter real CLK0_DIVIDE = 1,
+    parameter real CLK1_DIVIDE = 1,
+    parameter real CLK2_DIVIDE = 1,
+    parameter real CLK3_DIVIDE = 1,
+    parameter real CLK4_DIVIDE = 1,
+    parameter real CLK5_DIVIDE = 1
 ) (
     input logic clk_i,
     input logic rst_i,
 
     output logic clk0_o,
     output logic clk1_o,
+    output logic clk2_o,
+    output logic clk3_o,
+    output logic clk4_o,
+    output logic clk5_o,
 
     output logic locked_o
 );
@@ -20,6 +28,10 @@ module pll #(
 
     logic clk0_out;
     logic clk1_out;
+    logic clk2_out;
+    logic clk3_out;
+    logic clk4_out;
+    logic clk5_out;
 
     PLLE2_BASE #(
         .BANDWIDTH         ("OPTIMIZED"),  // Jitter programming (OPTIMIZED, HIGH, LOW)
@@ -33,6 +45,10 @@ module pll #(
         // CLKOUT0_DIVIDE - CLKOUT6_DIVIDE: Divide amount for CLKOUT (1-128)
         .CLKOUT0_DIVIDE    (CLK0_DIVIDE),
         .CLKOUT1_DIVIDE    (CLK1_DIVIDE),
+        .CLKOUT2_DIVIDE    (CLK2_DIVIDE),
+        .CLKOUT3_DIVIDE    (CLK3_DIVIDE),
+        .CLKOUT4_DIVIDE    (CLK4_DIVIDE),
+        .CLKOUT5_DIVIDE    (CLK5_DIVIDE),
         // CLKOUT0_DUTY_CYCLE - CLKOUT6_DUTY_CYCLE: Duty cycle for CLKOUT outputs (0.01-0.99).
         .CLKOUT0_DUTY_CYCLE(0.500),
         .CLKOUT1_DUTY_CYCLE(0.500),
@@ -50,10 +66,10 @@ module pll #(
     ) i_pll (
         .CLKOUT0 (clk0_out),   // 1-bit output: CLKOUT0
         .CLKOUT1 (clk1_out),   // 1-bit output: CLKOUT1
-        .CLKOUT2 (),           // 1-bit output: CLKOUT2
-        .CLKOUT3 (),           // 1-bit output: CLKOUT3
-        .CLKOUT4 (),           // 1-bit output: CLKOUT4
-        .CLKOUT5 (),           // 1-bit output: CLKOUT5
+        .CLKOUT2 (clk2_out),   // 1-bit output: CLKOUT2
+        .CLKOUT3 (clk3_out),   // 1-bit output: CLKOUT3
+        .CLKOUT4 (clk4_out),   // 1-bit output: CLKOUT4
+        .CLKOUT5 (clk5_out),   // 1-bit output: CLKOUT5
         // Feedback Clocks: 1-bit (each) output: Clock feedback ports
         .CLKFBOUT(clk_fbout),  // 1-bit output: Feedback clock
         // Status Ports: 1-bit (each) output: MMCM status ports
@@ -80,6 +96,26 @@ module pll #(
     BUFG i_clk1_out (
         .I(clk1_out),  // 1-bit input: Clock input
         .O(clk1_o)     // 1-bit output: Clock output
+    );
+
+    BUFG i_clk2_out (
+        .I(clk2_out),  // 1-bit input: Clock input
+        .O(clk2_o)     // 1-bit output: Clock output
+    );
+
+    BUFG i_clk3_out (
+        .I(clk3_out),  // 1-bit input: Clock input
+        .O(clk3_o)     // 1-bit output: Clock output
+    );
+
+    BUFG i_clk4_out (
+        .I(clk4_out),  // 1-bit input: Clock input
+        .O(clk4_o)     // 1-bit output: Clock output
+    );
+
+    BUFG i_clk5_out (
+        .I(clk5_out),  // 1-bit input: Clock input
+        .O(clk5_o)     // 1-bit output: Clock output
     );
 
 endmodule
