@@ -6,6 +6,7 @@ if {$xilinx == 1} {
         $path/../opencores/rtl/i2c_master_bit_ctrl.v
         $path/../opencores/rtl/i2c_master_byte_ctrl.v
         $path/../opencores/rtl/i2c_master_defines.v
+        $path/../opencores/rtl/i2c_slave_model.v
         $path/../opencores/rtl/timescale.v
         $path/rtl/i2c_pkg.svh
     "
@@ -21,6 +22,7 @@ if {$xilinx == 1} {
     add_file $path/../opencores/rtl/i2c_master_bit_ctrl.v
     add_file $path/../opencores/rtl/i2c_master_byte_ctrl.v
     add_file $path/../opencores/rtl/i2c_master_defines.v
+    add_file $path/../opencores/rtl/i2c_slave_model.v
     add_file $path/../opencores/rtl/timescale.v
     add_file $path/rtl/i2c_pkg.svh
 }
