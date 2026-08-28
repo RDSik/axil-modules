@@ -20,6 +20,7 @@ vlog modules/i2c/rtl/i2c_pkg.svh
 vlog modules/opencores/rtl/i2c_master_bit_ctrl.v
 vlog modules/opencores/rtl/i2c_master_byte_ctrl.v
 vlog modules/opencores/rtl/i2c_master_defines.v
+vlog modules/opencores/rtl/i2c_slave_model.v
 vlog modules/opencores/rtl/timescale.v
 
 vlog modules/i2c/tb/axil_i2c_tb.sv
