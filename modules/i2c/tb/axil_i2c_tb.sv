@@ -9,6 +9,7 @@ module axil_i2c_tb ();
     localparam int AXIL_DATA_WIDTH = 32;
 
     localparam logic [AXIL_ADDR_WIDTH-1:0] BASE_ADDR = 'h200000;
+    localparam logic [6:0] I2C_ADR = 7'ha;
 
     localparam int WAT_CYCLES = 250;
     localparam int CLK_PER_NS = 2;
@@ -16,6 +17,14 @@ module axil_i2c_tb ();
 
     logic clk_i;
     logic arstn_i;
+
+    logic scl_pad_i;
+    logic scl_pad_o;
+    logic scl_padoen_o;
+
+    logic sda_pad_i;
+    logic sda_pad_o;
+    logic sda_padoen_o;
 
     axil_if #(
         .ADDR_WIDTH(AXIL_ADDR_WIDTH),
@@ -65,13 +74,25 @@ module axil_i2c_tb ();
     ) i_axil_i2c (
         .clk_i       (clk_i),
         .arstn_i     (arstn_i),
-        .scl_pad_i   (),
-        .scl_pad_o   (),
-        .scl_padoen_o(),
-        .sda_pad_i   (),
-        .sda_pad_o   (),
-        .sda_padoen_o(),
+        .scl_pad_i   (scl_pad_i),
+        .scl_pad_o   (scl_pad_o),
+        .scl_padoen_o(scl_padoen_o),
+        .sda_pad_i   (sda_pad_i),
+        .sda_pad_o   (sda_pad_o),
+        .sda_padoen_o(sda_padoen_o),
         .s_axil      (s_axil)
+    );
+
+    assign scl = scl_padoen_o ? 1'bz : scl_pad_o;
+    assign sda = sda_padoen_o ? 1'bz : sda_pad_o;
+    assign scl_pad_i = scl;
+    assign sda_pad_i = sda;
+
+    i2c_slave_model #(
+        .I2C_ADR(I2C_ADR)
+    ) i_i2c_slave_model (
+        .scl(scl),
+        .sda(sda)
     );
 
 endmodule
