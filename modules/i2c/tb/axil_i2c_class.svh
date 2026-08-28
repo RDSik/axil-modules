@@ -67,10 +67,9 @@ class axil_i2c_class #(
         i2c_regs.control.core_rst = 1'b0;
         i2c_regs.clk.prescale     = PRESCALE;
         begin
-            env.master_write_reg(BASE_ADDR + ADDR_OFFSET * I2C_CLK_PRESCALE_REG_POS,
-                                 i2c_regs.clk.prescale);
+            env.master_write_reg(BASE_ADDR + ADDR_OFFSET * I2C_CLK_PRESCALE_REG_POS, i2c_regs.clk.prescale);
             env.master_write_reg(BASE_ADDR + ADDR_OFFSET * I2C_CONTROL_REG_POS, i2c_regs.control);
-            i2c_regs.tx.data = {7'ha, RW};
+            i2c_regs.tx.data = {I2C_ADR, RW};
             env.master_write_reg(BASE_ADDR + ADDR_OFFSET * I2C_TX_DATA_REG_POS, i2c_regs.tx);
             i2c_regs.tx.data = 8'hac;
             env.master_write_reg(BASE_ADDR + ADDR_OFFSET * I2C_TX_DATA_REG_POS, i2c_regs.tx);
