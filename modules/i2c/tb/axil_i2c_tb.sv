@@ -17,11 +17,11 @@ module axil_i2c_tb ();
     logic clk_i;
     logic arstn_i;
 
-    logic scl_pad_i;
+    wire  scl;
     logic scl_pad_o;
     logic scl_padoen_o;
 
-    logic sda_pad_i;
+    wire  sda;
     logic sda_pad_o;
     logic sda_padoen_o;
 
@@ -73,10 +73,10 @@ module axil_i2c_tb ();
     ) i_axil_i2c (
         .clk_i       (clk_i),
         .arstn_i     (arstn_i),
-        .scl_pad_i   (scl_pad_i),
+        .scl_pad_i   (scl),
         .scl_pad_o   (scl_pad_o),
         .scl_padoen_o(scl_padoen_o),
-        .sda_pad_i   (sda_pad_i),
+        .sda_pad_i   (sda),
         .sda_pad_o   (sda_pad_o),
         .sda_padoen_o(sda_padoen_o),
         .s_axil      (s_axil)
@@ -84,8 +84,6 @@ module axil_i2c_tb ();
 
     assign scl = scl_padoen_o ? 1'bz : scl_pad_o;
     assign sda = sda_padoen_o ? 1'bz : sda_pad_o;
-    assign scl_pad_i = scl;
-    assign sda_pad_i = sda;
 
     i2c_slave_model #(
         .I2C_ADR(I2C_ADR)
