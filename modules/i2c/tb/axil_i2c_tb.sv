@@ -9,7 +9,6 @@ module axil_i2c_tb ();
     localparam int AXIL_DATA_WIDTH = 32;
 
     localparam logic [AXIL_ADDR_WIDTH-1:0] BASE_ADDR = 'h200000;
-    localparam logic [6:0] I2C_ADR = 7'ha;
 
     localparam int WAT_CYCLES = 250;
     localparam int CLK_PER_NS = 2;
