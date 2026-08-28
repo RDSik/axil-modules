@@ -3,6 +3,7 @@
 
 package i2c_pkg;
 
+    localparam logic [6:0] I2C_ADR = 7'ha;
     localparam int I2C_PRESCALE_WIDTH = 16;
     localparam int I2C_DATA_WIDTH = 8;
 
