@@ -122,8 +122,6 @@ module axil_top_tb
         .uart_rx_i(uart),
         .uart_tx_o(uart),
         .s_axil   (s_axil),
-        .s_axis   (m_axis),
-        .m_axis   (s_axis),
         .m_spi    (m_spi),
         .m_eth    (m_eth)
     );
