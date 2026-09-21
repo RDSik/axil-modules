@@ -1,6 +1,7 @@
 vlib work
 vmap work
 
+vlog  modules/interface/rtl/axi_if.sv
 vlog  modules/interface/rtl/axis_if.sv
 vlog  modules/interface/rtl/axil_if.sv
 vlog  modules/interface/rtl/spi_if.sv
