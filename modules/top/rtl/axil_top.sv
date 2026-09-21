@@ -74,6 +74,21 @@ module axil_top #(
         .m_axil(m_axil)
     );
 
+    if (VENDOR == "xilinx") begin : g_axi_dma
+        axi_dma_wrap #(
+            .FIFO_DEPTH   (FIFO_DEPTH),
+            .ASYNC_MODE_EN(ASYNC_MODE_EN),
+            .ILA_EN       (ILA_EN)
+        ) i_axi_dma_wrap (
+            .s_axil    (m_axil[0]),
+            .m_axi     (m_axi),
+            .m_axis    (m_axis_mm2s),
+            .s_axis    (s_axis_s2mm),
+            .s2mm_irq_o(s2mm_irq_o),
+            .mm2s_irq_o(mm2s_irq_o)
+        );
+    end
+
     axil_uart #(
         .FIFO_DEPTH     (FIFO_DEPTH),
         .AXIL_ADDR_WIDTH(AXIL_ADDR_WIDTH),
@@ -85,7 +100,7 @@ module axil_top #(
         .arstn_i  (arstn_i),
         .uart_rx_i(uart_rx_i),
         .uart_tx_o(uart_tx_o),
-        .s_axil   (m_axil[0])
+        .s_axil   (m_axil[1])
     );
 
     axil_spi #(
@@ -99,7 +114,7 @@ module axil_top #(
         .clk_i  (clk_i),
         .arstn_i(arstn_i),
         .m_spi  (m_spi),
-        .s_axil (m_axil[1])
+        .s_axil (m_axil[2])
     );
 
     axil_i2c #(
@@ -117,7 +132,7 @@ module axil_top #(
         .sda_pad_i   (sda_pad_i),
         .sda_pad_o   (sda_pad_o),
         .sda_padoen_o(sda_padoen_o),
-        .s_axil      (m_axil[2])
+        .s_axil      (m_axil[3])
     );
 
     axil_rgmii #(
@@ -133,22 +148,7 @@ module axil_top #(
         .m_eth  (m_eth),
         .s_axis (m_axis_mm2s),
         .m_axis (s_axis_s2mm),
-        .s_axil (m_axil[3])
+        .s_axil (m_axil[4])
     );
-
-    if (VENDOR == "xilinx") begin : g_axi_dma
-        axi_dma_wrap #(
-            .FIFO_DEPTH   (FIFO_DEPTH),
-            .ASYNC_MODE_EN(ASYNC_MODE_EN),
-            .ILA_EN       (ILA_EN)
-        ) i_axi_dma_wrap (
-            .s_axil    (m_axil[4]),
-            .m_axi     (m_axi),
-            .m_axis    (m_axis_mm2s),
-            .s_axis    (s_axis_s2mm),
-            .s2mm_irq_o(s2mm_irq_o),
-            .mm2s_irq_o(mm2s_irq_o)
-        );
-    end
 
 endmodule
