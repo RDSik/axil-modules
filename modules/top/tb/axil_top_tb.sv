@@ -19,6 +19,14 @@ module axil_top_tb
     logic arstn_i;
     logic uart;
 
+    wire  scl;
+    logic scl_pad_o;
+    logic scl_padoen_o;
+
+    wire  sda;
+    logic sda_pad_o;
+    logic sda_padoen_o;
+
     spi_if #(.CS_WIDTH(SPI_CS_WIDTH)) m_spi ();
 
     assign m_spi.miso = m_spi.mosi;
@@ -53,8 +61,8 @@ module axil_top_tb
 
     axi_if #(
         .ADDR_WIDTH(AXIL_ADDR_WIDTH),
-        .DATA_WIDTH(AXIL_DATA_WIDTH)
-    ) m_axi (
+        .DATA_WIDTH(AXI_DATA_WIDTH)
+    ) axi (
         .clk_i  (clk_i),
         .arstn_i(arstn_i)
     );
@@ -125,14 +133,35 @@ module axil_top_tb
         .ASYNC_MODE_EN  (0),
         .VENDOR         ("")
     ) i_axil_top (
-        .clk_i    (clk_i),
-        .arstn_i  (arstn_i),
+        .clk_i  (clk_i),
+        .arstn_i(arstn_i),
+
         .uart_rx_i(uart),
         .uart_tx_o(uart),
-        .s_axil   (s_axil),
-        .m_axi    (m_axi),
-        .m_spi    (m_spi),
-        .m_eth    (m_eth)
+
+
+        .scl_pad_i   (scl),
+        .scl_pad_o   (scl_pad_o),
+        .scl_padoen_o(scl_padoen_o),
+
+        .sda_pad_i   (sda),
+        .sda_pad_o   (sda_pad_o),
+        .sda_padoen_o(sda_padoen_o),
+
+        .s_axil(s_axil),
+        .m_axi (axi),
+        .m_spi (m_spi),
+        .m_eth (m_eth)
+    );
+
+    assign scl = scl_padoen_o ? 1'bz : scl_pad_o;
+    assign sda = sda_padoen_o ? 1'bz : sda_pad_o;
+
+    i2c_slave_model #(
+        .I2C_ADR(I2C_ADR)
+    ) i_i2c_slave_model (
+        .scl(scl),
+        .sda(sda)
     );
 
 endmodule
