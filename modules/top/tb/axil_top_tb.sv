@@ -51,6 +51,14 @@ module axil_top_tb
         .arstn_i(arstn_i)
     );
 
+    axi_if #(
+        .ADDR_WIDTH(AXIL_ADDR_WIDTH),
+        .DATA_WIDTH(AXIL_DATA_WIDTH)
+    ) m_axi (
+        .clk_i  (clk_i),
+        .arstn_i(arstn_i)
+    );
+
     initial begin
         arstn_i = 1'b0;
         repeat (RESET_DELAY) @(posedge clk_i);
@@ -122,6 +130,7 @@ module axil_top_tb
         .uart_rx_i(uart),
         .uart_tx_o(uart),
         .s_axil   (s_axil),
+        .m_axi    (m_axi),
         .m_spi    (m_spi),
         .m_eth    (m_eth)
     );
