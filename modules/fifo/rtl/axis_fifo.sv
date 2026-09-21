@@ -1,6 +1,5 @@
 /* verilator lint_off TIMESCALEMOD */
 module axis_fifo #(
-    parameter int         FIFO_WIDTH    = 32,
     parameter int         FIFO_DEPTH    = 128,
     parameter int         PIPE_STAGE    = 5,
     parameter int         CDC_REG_NUM   = 2,
@@ -20,6 +19,7 @@ module axis_fifo #(
     output logic [$clog2(FIFO_DEPTH):0] rd_data_cnt_o
 );
 
+    localparam int FIFO_WIDTH = s_axis.DATA_WIDTH;
     localparam int FULL_WIDTH = FIFO_WIDTH + (SIGNAL_EN[0] * 1) + (SIGNAL_EN[1] * FIFO_WIDTH / 8);
 
     logic [FULL_WIDTH-1:0] wr_data;
