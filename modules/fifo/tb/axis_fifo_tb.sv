@@ -80,7 +80,6 @@ module axis_fifo_tb ();
 
     axis_fifo #(
         .FIFO_DEPTH   (FIFO_DEPTH),
-        .FIFO_WIDTH   (FIFO_WIDTH),
         .PIPE_STAGE   (PIPE_STAGE),
         .ASYNC_MODE_EN(ASYNC_MODE_EN),
         .CDC_REG_NUM  (CDC_REG_NUM),
