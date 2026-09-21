@@ -2,7 +2,7 @@ vlib work
 vmap work
 
 vlog  modules/interface/rtl/axi_if.sv
-vlog  modules/interface/rtl/axis_if.sv
+vlog  modules/interface/rtl/axil_if.sv
 vlog  modules/interface/rtl/axil_if.sv
 vlog  modules/interface/rtl/spi_if.sv
 vlog  modules/interface/rtl/eth_if.sv
@@ -41,6 +41,7 @@ vlog  modules/spi/rtl/spi_pkg.svh
 vlog modules/opencores/rtl/i2c_master_bit_ctrl.v
 vlog modules/opencores/rtl/i2c_master_byte_ctrl.v
 vlog modules/opencores/rtl/i2c_master_defines.v
+vlog modules/opencores/rtl/i2c_slave_model.v
 vlog modules/opencores/rtl/timescale.v
 
 vlog  modules/i2c/rtl/axil_i2c.sv
