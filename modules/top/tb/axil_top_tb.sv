@@ -32,14 +32,14 @@ module axil_top_tb
     axis_if #(
         .DATA_WIDTH(AXIS_DATA_WIDTH)
     ) m_axis (
-        .clk_i(clk_i),
+        .clk_i  (clk_i),
         .arstn_i(arstn_i)
     );
 
     axis_if #(
         .DATA_WIDTH(AXIS_DATA_WIDTH)
     ) s_axis (
-        .clk_i(clk_i),
+        .clk_i  (clk_i),
         .arstn_i(arstn_i)
     );
 
@@ -77,23 +77,23 @@ module axil_top_tb
         axil_uart_class #(
             .DATA_WIDTH(AXIL_DATA_WIDTH),
             .ADDR_WIDTH(AXIL_ADDR_WIDTH),
-            .BASE_ADDR (SLAVE_LOW_ADDR[0])
+            .BASE_ADDR (SLAVE_LOW_ADDR[1])
         ) uart;
         axil_spi_class #(
             .DATA_WIDTH(AXIL_DATA_WIDTH),
             .ADDR_WIDTH(AXIL_ADDR_WIDTH),
-            .BASE_ADDR (SLAVE_LOW_ADDR[1])
+            .BASE_ADDR (SLAVE_LOW_ADDR[2])
         ) spi;
         axil_i2c_class #(
             .DATA_WIDTH(AXIL_DATA_WIDTH),
             .ADDR_WIDTH(AXIL_ADDR_WIDTH),
-            .BASE_ADDR (SLAVE_LOW_ADDR[2])
+            .BASE_ADDR (SLAVE_LOW_ADDR[3])
         ) i2c;
         axil_rgmii_class #(
             .DATA_WIDTH(AXIL_DATA_WIDTH),
             .ADDR_WIDTH(AXIL_ADDR_WIDTH),
             .TLAST_EN  (0),
-            .BASE_ADDR (SLAVE_LOW_ADDR[3])
+            .BASE_ADDR (SLAVE_LOW_ADDR[4])
         ) rgmii;
         uart  = new(s_axil[0]);
         spi   = new(s_axil[0]);
