@@ -140,7 +140,6 @@ module axil_spi
 
     axis_fifo #(
         .FIFO_DEPTH   (FIFO_DEPTH),
-        .FIFO_WIDTH   (SPI_DATA_WIDTH),
         .ASYNC_MODE_EN(FIFO_ASYNC_MODE),
         .SIGNAL_EN    (SIGNAL_EN),
         .RAM_STYLE    (RAM_STYLE)
@@ -154,7 +153,6 @@ module axil_spi
 
     axis_fifo #(
         .FIFO_DEPTH   (FIFO_DEPTH),
-        .FIFO_WIDTH   (SPI_DATA_WIDTH),
         .ASYNC_MODE_EN(FIFO_ASYNC_MODE),
         .SIGNAL_EN    (SIGNAL_EN),
         .RAM_STYLE    (RAM_STYLE)
