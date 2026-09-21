@@ -135,7 +135,6 @@ module axil_uart
 
     axis_fifo #(
         .FIFO_DEPTH   (FIFO_DEPTH),
-        .FIFO_WIDTH   (UART_DATA_WIDTH),
         .ASYNC_MODE_EN(FIFO_ASYNC_MODE),
         .SIGNAL_EN    ('0),
         .RAM_STYLE    (RAM_STYLE)
@@ -149,7 +148,6 @@ module axil_uart
 
     axis_fifo #(
         .FIFO_DEPTH   (FIFO_DEPTH),
-        .FIFO_WIDTH   (UART_DATA_WIDTH),
         .ASYNC_MODE_EN(FIFO_ASYNC_MODE),
         .SIGNAL_EN    ('0),
         .RAM_STYLE    (RAM_STYLE)
