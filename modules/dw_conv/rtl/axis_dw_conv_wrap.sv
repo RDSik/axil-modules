@@ -34,7 +34,6 @@ module axis_dw_conv_wrap #(
 
             axis_fifo #(
                 .FIFO_DEPTH   (FIFO_DEPTH),
-                .FIFO_WIDTH   (S_DATA_WIDTH),
                 .CDC_REG_NUM  (CDC_REG_NUM),
                 .SIGNAL_EN    (SIGNAL_EN),
                 .ASYNC_MODE_EN(ASYNC_MODE_EN)
@@ -68,7 +67,6 @@ module axis_dw_conv_wrap #(
 
             axis_fifo #(
                 .FIFO_DEPTH   (FIFO_DEPTH),
-                .FIFO_WIDTH   (M_DATA_WIDTH),
                 .CDC_REG_NUM  (CDC_REG_NUM),
                 .SIGNAL_EN    (SIGNAL_EN),
                 .ASYNC_MODE_EN(ASYNC_MODE_EN)
