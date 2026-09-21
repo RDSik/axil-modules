@@ -226,7 +226,6 @@ module mac_rx
 
     axis_fifo #(
         .FIFO_DEPTH   (FIFO_DEPTH),
-        .FIFO_WIDTH   (AXIS_DATA_WIDTH),
         .ASYNC_MODE_EN(0),
         .SIGNAL_EN    ('1),
         .RAM_STYLE    ("block")
