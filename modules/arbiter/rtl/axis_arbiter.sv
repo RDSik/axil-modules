@@ -12,8 +12,8 @@ module axis_arbiter #(
     logic clk_i;
     logic arstn_i;
 
-    assign clk_i   = s_axis.clk_i;
-    assign arstn_i = s_axis.arstn_i;
+    assign clk_i   = m_axis.clk_i;
+    assign arstn_i = m_axis.arstn_i;
 
     logic [MASTER_NUM-1:0][DATA_WIDTH-1:0] s_axis_tdata_reg;
     logic [MASTER_NUM-1:0]                 s_axis_tvalid_reg;
