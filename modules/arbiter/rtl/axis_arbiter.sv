@@ -1,23 +1,19 @@
 /* verilator lint_off TIMESCALEMOD */
 module axis_arbiter #(
-    parameter int unsigned MASTER_NUM = 4,
-    parameter int unsigned DATA_WIDTH = 16,
-    parameter int unsigned DEST_WIDTH = $clog2(MASTER_NUM)
+    parameter int unsigned MASTER_NUM = 4
 ) (
-    input logic clk_i,
-    input logic srst_i,
-
-    input  logic [MASTER_NUM-1:0][DATA_WIDTH-1:0] s_axis_tdata_i,
-    input  logic [MASTER_NUM-1:0]                 s_axis_tvalid_i,
-    input  logic [MASTER_NUM-1:0]                 s_axis_tlast_i,
-    output logic [MASTER_NUM-1:0]                 s_axis_tready_o,
-
-    output logic [DATA_WIDTH-1:0] m_axis_tdata_o,
-    output logic [DEST_WIDTH-1:0] m_axis_tdest_o,
-    output logic                  m_axis_tvalid_o,
-    output logic                  m_axis_tlast_o,
-    input  logic                  m_axis_tready_i
+    axis_if.slave  s_axis[MASTER_NUM-1:0],
+    axis_if.master m_axis
 );
+
+    localparam int DATA_WIDTH = s_axis.DATA_WIDTH;
+    localparam int DEST_WIDTH = $clog2(MASTER_NUM);
+
+    logic clk_i;arstn_i
+    logic arstn_i;
+
+    assign clk_i   = s_axis.clk_i;
+    assign arstn_i = s_axis.arstn_i;
 
     logic [MASTER_NUM-1:0][DATA_WIDTH-1:0] s_axis_tdata_reg;
     logic [MASTER_NUM-1:0]                 s_axis_tvalid_reg;
@@ -32,8 +28,8 @@ module axis_arbiter #(
         assign free_reg           = ~s_axis_tvalid_reg[i] | (m_axis_tready & grant[i]);
         assign s_axis_tready_o[i] = free_reg;
 
-        always_ff @(posedge clk_i) begin
-            if (srst_i) begin
+        always_ff @(posedge clk_i or negedge arstn_i) begin
+            if (~arstn_i) begin
                 s_axis_tvalid_reg[i] <= 1'b0;
             end else if (free_reg) begin
                 s_axis_tvalid_reg[i] <= s_axis_tvalid_i[i];
@@ -56,7 +52,7 @@ module axis_arbiter #(
         .MASTER_NUM(MASTER_NUM)
     ) i_round_robin_arbiter (
         .clk_i        (clk_i),
-        .srst_i       (srst_i),
+        .srst_i       (~arstn_i),
         .ack_i        (ack),
         .req_i        (s_axis_tvalid_reg),
         .grant_valid_o(grant_valid),
@@ -69,8 +65,8 @@ module axis_arbiter #(
     logic                  m_axis_tvalid_reg;
     logic                  m_axis_tlast_reg;
 
-    always_ff @(posedge clk_i) begin
-        if (srst_i) begin
+    always_ff @(posedge clk_i or negedge arstn_i) begin
+            if (~arstn_i) begin
             m_axis_tvalid_reg <= 1'b0;
         end else if (m_axis_tready) begin
             m_axis_tvalid_reg <= grant_valid;
