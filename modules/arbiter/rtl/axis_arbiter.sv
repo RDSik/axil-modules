@@ -6,8 +6,8 @@ module axis_arbiter #(
     axis_if.master m_axis
 );
 
-    localparam int DATA_WIDTH = s_axis.DATA_WIDTH;
-    localparam int DEST_WIDTH = $clog2(MASTER_NUM);
+    localparam int DATA_WIDTH = m_axis.DATA_WIDTH;
+    localparam int DEST_WIDTH = m_axis.DEST_WIDTH;
 
     logic clk_i;
     logic arstn_i;
