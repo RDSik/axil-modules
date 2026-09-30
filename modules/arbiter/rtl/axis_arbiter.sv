@@ -6,14 +6,14 @@ module axis_arbiter #(
     axis_if.master m_axis
 );
 
-    localparam int DATA_WIDTH = m_axis.DATA_WIDTH;
-    localparam int DEST_WIDTH = m_axis.DEST_WIDTH;
+    localparam int DATA_WIDTH = s_axis.DATA_WIDTH;
+    localparam int DEST_WIDTH = $clog2(MASTER_NUM);
 
     logic clk_i;
     logic arstn_i;
 
-    assign clk_i   = m_axis.clk_i;
-    assign arstn_i = m_axis.arstn_i;
+    assign clk_i   = s_axis.clk_i;
+    assign arstn_i = s_axis.arstn_i;
 
     logic [MASTER_NUM-1:0][DATA_WIDTH-1:0] s_axis_tdata_reg;
     logic [MASTER_NUM-1:0]                 s_axis_tvalid_reg;
