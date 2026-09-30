@@ -26,6 +26,7 @@ module axis_arbiter #(
     for (genvar i = 0; i < MASTER_NUM; i++) begin : g_stages
         logic free_reg;
         assign free_reg         = ~s_axis_tvalid_reg[i] | (m_axis_tready & grant[i]);
+
         assign s_axis[i].tready = free_reg;
 
         always_ff @(posedge clk_i or negedge arstn_i) begin
