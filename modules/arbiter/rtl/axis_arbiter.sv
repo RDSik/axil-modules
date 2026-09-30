@@ -1,40 +1,92 @@
 /* verilator lint_off TIMESCALEMOD */
 module axis_arbiter #(
-    parameter int MASTER_NUM = 4,
-    parameter int DATA_WIDTH = 16,
-    parameter int USER_WIDTH = 2
+    parameter int unsigned MASTER_NUM = 4,
+    parameter int unsigned DATA_WIDTH = 16,
+    parameter int unsigned DEST_WIDTH = $clog2(MASTER_NUM)
 ) (
-    axis_if.slave  s_axis[MASTER_NUM-1:0],
-    axis_if.master m_axis
+    input logic clk_i,
+    input logic srst_i,
+
+    input  logic [MASTER_NUM-1:0][DATA_WIDTH-1:0] s_axis_tdata_i,
+    input  logic [MASTER_NUM-1:0]                 s_axis_tvalid_i,
+    input  logic [MASTER_NUM-1:0]                 s_axis_tlast_i,
+    output logic [MASTER_NUM-1:0]                 s_axis_tready_o,
+
+    output logic [DATA_WIDTH-1:0] m_axis_tdata_o,
+    output logic [DEST_WIDTH-1:0] m_axis_tdest_o,
+    output logic                  m_axis_tvalid_o,
+    output logic                  m_axis_tlast_o,
+    input  logic                  m_axis_tready_i
 );
 
-    logic                                          m_handshake;
-    logic [        MASTER_NUM-1:0]                 grant;
-    logic [$clog2(MASTER_NUM)-1:0]                 grant_indx;
-    logic [        MASTER_NUM-1:0]                 s_axis_tvalid;
-    logic [        MASTER_NUM-1:0][DATA_WIDTH-1:0] s_axis_tdata;
-    logic [        MASTER_NUM-1:0][USER_WIDTH-1:0] m_axis_tuser;
+    logic [MASTER_NUM-1:0][DATA_WIDTH-1:0] s_axis_tdata_reg;
+    logic [MASTER_NUM-1:0]                 s_axis_tvalid_reg;
+    logic [MASTER_NUM-1:0]                 s_axis_tlast_reg;
+    logic                                  m_axis_tready;
+    logic [MASTER_NUM-1:0]                 grant;
 
-    assign m_handshake   = m_axis.tvalid & m_axis.tready;
-    assign m_axis.tvalid = |grant;
-    assign m_axis.tdata  = s_axis_tdata[grant_indx];
-    assign m_axis.tuser  = grant_indx;
+    assign m_axis_tready = m_axis_tready_i | ~m_axis_tvalid_o;
 
-    for (genvar i = 0; i < MASTER_NUM; i++) begin : g_axis
-        assign s_axis[i].tready = m_axis.tready & grant[i];
-        assign s_axis_tvalid[i] = s_axis[i].tvalid;
-        assign s_axis_tdata[i]  = s_axis[i].tdata;
+    for (genvar i = 0; i < MASTER_NUM; i++) begin : g_stages
+        logic free_reg;
+        assign free_reg           = ~s_axis_tvalid_reg[i] | (m_axis_tready & grant[i]);
+        assign s_axis_tready_o[i] = free_reg;
+
+        always_ff @(posedge clk_i) begin
+            if (srst_i) begin
+                s_axis_tvalid_reg[i] <= 1'b0;
+            end else if (free_reg) begin
+                s_axis_tvalid_reg[i] <= s_axis_tvalid_i[i];
+            end
+
+            if (free_reg) begin
+                s_axis_tdata_reg[i] <= s_axis_tdata_i[i];
+                s_axis_tlast_reg[i] <= s_axis_tlast_i[i];
+            end
+        end
     end
+
+    logic                          ack;
+    logic                          grant_valid;
+    logic [$clog2(MASTER_NUM)-1:0] grant_indx;
+
+    assign ack = m_axis_tready & grant_valid & s_axis_tlast_reg[grant_indx];
 
     round_robin_arbiter #(
         .MASTER_NUM(MASTER_NUM)
     ) i_round_robin_arbiter (
-        .clk_i  (m_axis.clk_i),
-        .rst_i  (~m_axis.arstn_i),
-        .ack_i  (m_handshake),
-        .req_i  (s_axis_tvalid),
-        .grant_o(grant),
-        .indx_o (grant_indx)
+        .clk_i        (clk_i),
+        .srst_i       (srst_i),
+        .ack_i        (ack),
+        .req_i        (s_axis_tvalid_reg),
+        .grant_valid_o(grant_valid),
+        .grant_o      (grant),
+        .indx_o       (grant_indx)
     );
 
+    logic [DATA_WIDTH-1:0] m_axis_tdata_reg;
+    logic [DEST_WIDTH-1:0] m_axis_tdest_reg;
+    logic                  m_axis_tvalid_reg;
+    logic                  m_axis_tlast_reg;
+
+    always_ff @(posedge clk_i) begin
+        if (srst_i) begin
+            m_axis_tvalid_reg <= 1'b0;
+        end else if (m_axis_tready) begin
+            m_axis_tvalid_reg <= grant_valid;
+        end
+
+        if (m_axis_tready & grant_valid) begin
+            m_axis_tdata_reg <= s_axis_tdata_reg[grant_indx];
+            m_axis_tdest_reg <= DEST_WIDTH'(grant_indx);
+            m_axis_tlast_reg <= s_axis_tlast_reg[grant_indx];
+        end
+    end
+
+    assign m_axis_tdata_o  = m_axis_tdata_reg;
+    assign m_axis_tdest_o  = m_axis_tdest_reg;
+    assign m_axis_tlast_o  = m_axis_tlast_reg;
+    assign m_axis_tvalid_o = m_axis_tvalid_reg;
+
 endmodule
+
