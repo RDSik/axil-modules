@@ -1,6 +1,6 @@
 /* verilator lint_off TIMESCALEMOD */
 module axis_arbiter #(
-    parameter int unsigned MASTER_NUM = 4
+    parameter int MASTER_NUM = 4
 ) (
     axis_if.slave  s_axis[MASTER_NUM-1:0],
     axis_if.master m_axis
@@ -9,7 +9,7 @@ module axis_arbiter #(
     localparam int DATA_WIDTH = s_axis.DATA_WIDTH;
     localparam int DEST_WIDTH = $clog2(MASTER_NUM);
 
-    logic clk_i;arstn_i
+    logic clk_i;
     logic arstn_i;
 
     assign clk_i   = s_axis.clk_i;
@@ -21,23 +21,23 @@ module axis_arbiter #(
     logic                                  m_axis_tready;
     logic [MASTER_NUM-1:0]                 grant;
 
-    assign m_axis_tready = m_axis_tready_i | ~m_axis_tvalid_o;
+    assign m_axis_tready = m_axis.tready | ~m_axis.tvalid;
 
     for (genvar i = 0; i < MASTER_NUM; i++) begin : g_stages
         logic free_reg;
-        assign free_reg           = ~s_axis_tvalid_reg[i] | (m_axis_tready & grant[i]);
-        assign s_axis_tready_o[i] = free_reg;
+        assign free_reg         = ~s_axis_tvalid_reg[i] | (m_axis_tready & grant[i]);
+        assign s_axis[i].tready = free_reg;
 
         always_ff @(posedge clk_i or negedge arstn_i) begin
             if (~arstn_i) begin
                 s_axis_tvalid_reg[i] <= 1'b0;
             end else if (free_reg) begin
-                s_axis_tvalid_reg[i] <= s_axis_tvalid_i[i];
+                s_axis_tvalid_reg[i] <= s_axis[i].tvalid;
             end
 
             if (free_reg) begin
-                s_axis_tdata_reg[i] <= s_axis_tdata_i[i];
-                s_axis_tlast_reg[i] <= s_axis_tlast_i[i];
+                s_axis_tdata_reg[i] <= s_axis[i].tdata;
+                s_axis_tlast_reg[i] <= s_axis[i].tlast;
             end
         end
     end
@@ -79,10 +79,10 @@ module axis_arbiter #(
         end
     end
 
-    assign m_axis_tdata_o  = m_axis_tdata_reg;
-    assign m_axis_tdest_o  = m_axis_tdest_reg;
-    assign m_axis_tlast_o  = m_axis_tlast_reg;
-    assign m_axis_tvalid_o = m_axis_tvalid_reg;
+    assign m_axis.tdata  = m_axis_tdata_reg;
+    assign m_axis.tdest  = m_axis_tdest_reg;
+    assign m_axis.tlast  = m_axis_tlast_reg;
+    assign m_axis.tvalid = m_axis_tvalid_reg;
 
 endmodule
 
