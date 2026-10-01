@@ -75,7 +75,7 @@ module axis_arbiter #(
 
         if (m_axis_tready & grant_valid) begin
             m_axis_tdata_reg <= s_axis_tdata_reg[grant_indx];
-            m_axis_tdest_reg <= DEST_WIDTH'(grant_indx);
+            m_axis_tdest_reg <= grant_indx;
             m_axis_tlast_reg <= s_axis_tlast_reg[grant_indx];
         end
     end
